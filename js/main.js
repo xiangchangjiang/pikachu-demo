@@ -129,37 +129,49 @@
   border-radius:48px/50px;
 }
   `
+  var duration = 50
+  $('.actions').on('click', 'button', function (e) {
+    let $button = $(e.currentTarget)
+    // console.log($button)
+    let speed = $button.attr('data-speed')
+    // console.log($speed)
+    $button.addClass('active').siblings('.active').removeClass('active')
+    switch (speed) {
+      case 'slow':
+        duration = 100
+        break;
+      case 'normal':
+        duration = 50
+        break;
+      case 'fast':
+        duration = 10
+        break;
+    }
+    // console.log('===============')
+    // console.log(duration)
+  })
 
   function writeCode(prefix, result, fn) {
     let container = document.querySelector('#code')
     let styleTag = document.querySelector('#styleTag')
     let n = 0
-    let id = setInterval(() => {
+    let id = setTimeout(function run() {
       n += 1
       container.innerHTML = prefix + result.substring(0, n)
       styleTag.innerHTML = prefix + result.substring(0, n)
       container.scrollTop = container.scrollHeight
-      if (n >= str.length) {
-        window.clearInterval(id)
-        fn && fn.call()  //fn如果存在就回调fn
+      if (n < str.length) {
+        // console.log(duration)
+        setTimeout(run, duration)
+      } else {
+        fn && fn.call() //fn如果存在就回调fn}
       }
-    }, 0)
+    }, 50)
 
   }
   writeCode('', str, () => {
     let container = document.querySelector('#code')
     console.log('皮卡丘画完了')
-    container.scrollTop = 0
+    // container.scrollTop = 0
   })
 }.call()
-
-$('.actions').on('click','button',function(e){
-  let $button = $(e.currentTarget)
-  console.log($button)
-  let $speed=$button.attr('data-speed')
-  // console.log($speed)
-  $button.addClass('active').siblings('.active').removeClass('active')
-
-
-})
-
